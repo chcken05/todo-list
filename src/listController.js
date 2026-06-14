@@ -4,8 +4,8 @@ import { list } from "./list.js";
 export const listController = (() => {
   const todos = list.getTodo();
 
-  const addTodo = (title, description, dueDate, priority, project) => {
-    const todo = new Todo(title, description, dueDate, priority, project);
+  const addTodo = (title, description) => {
+    const todo = new Todo(title, description);
     todos.push(todo);
   };
 
