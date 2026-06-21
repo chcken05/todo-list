@@ -8,10 +8,12 @@
   <body>
     <div class="sidebar">
       <button id="addTask">Add task</button>
+      <button id="addProject">Add project</button>
       <div class="projects">
         <h3>My Projects</h3>
       </div>
     </div>
+    
 
     <dialog id="myDialog">
       <form id="myForm" method="dialog">
@@ -22,7 +24,21 @@
 
         <label>
           Description:
-          <input type="text" name="title" id="description" required />
+          <input type="text" name="description" id="description" required />
+        </label>
+
+        <button type="button" value="cancel" id="close" formnovalidate>
+          Cancel
+        </button>
+        <button type="submit" value="submit" id="submit">Submit</button>
+      </form>
+    </dialog>
+
+    <dialog id="projectDialog">
+      <form id="projectForm" method="dialog">
+        <label>
+          Name:
+          <input type="text" name="name" id="name" required />
         </label>
 
         <button type="button" value="cancel" id="close" formnovalidate>

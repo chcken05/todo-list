@@ -1,7 +1,7 @@
 import {Todo} from "./todo.js";
-import {list} from "./list.js";
+import {list} from "../list.js";
 
-export const listController = (() => {
+export const todoController = (() => {
   const todos = list.getTodo();
 
   const addTodo = (title, description) => {

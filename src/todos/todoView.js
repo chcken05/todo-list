@@ -1,8 +1,8 @@
 import {Todo} from "./todo.js";
-import {list} from "./list.js";
-import {listController} from "./listController.js";
+import {list} from "../list.js";
+import {todoController} from "./todoController.js";
 
-export const listView = (() => {
+export const todoView = (() => {
   const addTask = document.querySelector("#addTask");
   const dialog = document.querySelector("#myDialog");
   const myForm = document.querySelector("#myForm");
@@ -26,13 +26,13 @@ export const listView = (() => {
     const todoDescription = document.querySelector("#description").value;
 
     if (editingId === null) {
-      let todo = listController.addTodo(todoTitle, todoDescription);
+      let todo = todoController.addTodo(todoTitle, todoDescription);
       renderTodo(todo);
     } else {
-      listController.updateTodo(editingId, todoTitle, todoDescription);
+      todoController.updateTodo(editingId, todoTitle, todoDescription);
       updateCard(todoTitle, todoDescription);
       editingId = null;
-      listController.log();
+      todoController.log();
     }
 
     myForm.reset();
@@ -56,9 +56,9 @@ export const listView = (() => {
     card.append(title, description, editBtn, deleteBtn);
 
     deleteBtn.addEventListener("click", () => {
-      listController.deleteTodo(todo.id);
+      todoController.deleteTodo(todo.id);
       card.remove();
-      listController.log();
+      todoController.log();
     });
 
     editBtn.addEventListener("click", () => {
