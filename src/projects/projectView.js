@@ -1,5 +1,6 @@
 import {Project} from "./project.js";
 import {projectController} from "./projectController.js";
+import {list} from "../list.js";
 
 export const projectView = (() => {
   const addProject = document.querySelector("#addProject");
@@ -21,6 +22,7 @@ export const projectView = (() => {
 
     const name = document.querySelector("#name").value;
     projectController.createProject(name);
+    projectController.updateProjectDrop();
     dialogProject.close();
     formProject.reset();
     projectController.projectLog();

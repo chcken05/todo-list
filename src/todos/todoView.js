@@ -8,6 +8,7 @@ export const todoView = (() => {
   const myForm = document.querySelector("#myForm");
   const closeBtn = document.querySelector("#close");
   const mainContent = document.querySelector("#mainContent");
+  const projectSelect = document.querySelector("#projectSelect");
   let editingId = null;
   let updateCard = null;
 
@@ -24,12 +25,14 @@ export const todoView = (() => {
     e.preventDefault();
     const todoTitle = document.querySelector("#title").value;
     const todoDescription = document.querySelector("#description").value;
+    const selectedProject = projectSelect.value;
 
     if (editingId === null) {
-      let todo = todoController.addTodo(todoTitle, todoDescription);
+      let todo = todoController.addTodo(todoTitle, todoDescription, selectedProject);
       renderTodo(todo);
+      todoController.log();
     } else {
-      todoController.updateTodo(editingId, todoTitle, todoDescription);
+      todoController.updateTodo(editingId, todoTitle, todoDescription, selectedProject);
       updateCard(todoTitle, todoDescription);
       editingId = null;
       todoController.log();
@@ -63,9 +66,11 @@ export const todoView = (() => {
 
     editBtn.addEventListener("click", () => {
       editingId = todo.id;
+      let activeIndex = projectSelect.selectedIndex;
       document.querySelector("#title").value = todo.title;
       document.querySelector("#description").value = todo.description;
-      updateCard = (newTitle, newDescription) => {
+      projectSelect.value = todo.project;
+      updateCard = (newTitle, newDescription, newProject) => {
         title.textContent = newTitle;
         description.textContent = newDescription;
       };

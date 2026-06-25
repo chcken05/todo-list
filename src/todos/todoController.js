@@ -4,18 +4,19 @@ import {list} from "../list.js";
 export const todoController = (() => {
   const todos = list.getTodo();
 
-  const addTodo = (title, description) => {
-    const todo = new Todo(title, description);
+  const addTodo = (title, description, selectedProject) => {
+    const todo = new Todo(title, description, selectedProject);
     todos.push(todo);
     return todo;
   };
 
-  const updateTodo = (id, title, description) => {
+  const updateTodo = (id, title, description, project) => {
     const index = todos.findIndex((t) => t.id === id);
     console.log("id passed in:", id, "index found:", index);
     if (index !== -1) {
       todos[index].title = title;
       todos[index].description = description;
+      todos[index].project = project;
     }
   };
 
