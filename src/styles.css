@@ -1,72 +1,297 @@
-/* josh comeau's ccs reset */
-
-/* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-/* 2. Remove default margin */
-*:not(dialog) {
-  margin: 0;
-}
-
-/* 3. Enable keyword animations */
+/* josh comeau's css reset */
+*, *::before, *::after { box-sizing: border-box; }
+*:not(dialog) { margin: 0; }
 @media (prefers-reduced-motion: no-preference) {
-  html {
-    interpolate-size: allow-keywords;
-  }
+  html { interpolate-size: allow-keywords; }
 }
-
 body {
-  /* 4. Increase line-height */
   line-height: 1.5;
-  /* 5. Improve text rendering */
   -webkit-font-smoothing: antialiased;
 }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+p { text-wrap: pretty; }
+h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+#root, #__next { isolation: isolate; }
 
-/* 6. Improve media defaults */
-img, picture, video, canvas, svg {
-  display: block;
-  max-width: 100%;
+/* ── tokens ── */
+:root {
+  --bg:        #f9f9f8;
+  --surface:   #ffffff;
+  --border:    #e4e4e0;
+  --text:      #1a1a1a;
+  --text-muted:#7a7a72;
+  --accent:    #3a6b4a;
+  --accent-bg: #edf4ef;
+  --danger:    #c0392b;
+  --radius:    8px;
+  --sidebar-w: 220px;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
-/* 7. Inherit fonts for form controls */
-input, button, textarea, select {
-  font: inherit;
+/* ── layout ── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
 }
 
-/* 8. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
-  overflow-wrap: break-word;
-}
-
-/* 9. Improve line wrapping */
-p {
-  text-wrap: pretty;
-}
-h1, h2, h3, h4, h5, h6 {
-  text-wrap: balance;
-}
-
-/*
-  10. Create a root stacking context
-*/
-#root, #__next {
-  isolation: isolate;
-}
-
-/* main styling */
 .container {
   display: flex;
   height: 100vh;
-  width: auto;
-}
-
-.sidebar {
-  width: 15%;
-  border-right: 2px solid black;
-}
-
-.main {
   width: 100%;
+}
+
+/* ── sidebar ── */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px 16px;
+}
+
+.sidebar h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 16px 4px 6px;
+}
+
+/* sidebar action buttons */
+#addTask,
+#addProject {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+
+#addTask::before  { content: "+"; font-size: 18px; color: var(--accent); line-height: 1; }
+#addProject::before { content: "+"; font-size: 18px; color: var(--accent); line-height: 1; }
+
+#addTask:hover,
+#addProject:hover {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* project list in sidebar */
+.projects {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.projects > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  transition: background 0.15s;
+}
+
+.projects > div:hover { background: var(--bg); }
+
+.projects > div h4 {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* reveal edit/delete on hover */
+.projects > div button {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  opacity: 0;
+}
+
+.projects > div:hover button { opacity: 1; }
+
+.projects > div button:first-of-type:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.projects > div button:last-of-type:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ── main content ── */
+#mainContent {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── todo cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.card h4 {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.card h5 {
+  flex: 2;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.card .editBtn,
+.card .deleteBtn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.card .editBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.card .deleteBtn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: #fdf2f2;
+}
+
+/* ── dialogs ── */
+dialog {
+  border: none;
+  border-radius: 12px;
+  padding: 28px 32px;
+  width: 400px;
+  background: var(--surface);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+dialog::backdrop {
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(2px);
+}
+
+dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+dialog label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+dialog input,
+dialog select {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+dialog input:focus,
+dialog select:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+/* button row at bottom of dialog */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+dialog button[type="button"],
+dialog button[type="submit"] {
+  padding: 8px 18px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+dialog button[type="button"] {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+dialog button[type="button"]:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+dialog button[type="submit"] {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+}
+
+dialog button[type="submit"]:hover {
+  background: #2f5a3d;
 }
