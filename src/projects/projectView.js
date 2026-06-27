@@ -68,4 +68,6 @@ export const projectView = (() => {
       projectController.projectLog();
     });
   };
+
+  return {renderProject};
 })();

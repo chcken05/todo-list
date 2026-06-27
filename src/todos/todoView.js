@@ -77,4 +77,6 @@ export const todoView = (() => {
       dialog.show();
     });
   };
+
+  return {renderTodo};
 })();
