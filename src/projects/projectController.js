@@ -11,6 +11,19 @@ export const projectController = (() => {
     return project;
   };
 
+  const updateProject = (id, name) => {
+    const index = projects.findIndex((p) => p.id === id);
+    console.log("id passed in:", id, "index found:", index);
+    if (index !== -1) {
+      projects[index].name = name;
+    }
+  };
+
+  const deleteProject = (id) => {
+    const index = projects.findIndex((p) => p.id === id);
+    if (index !== -1) projects.splice(index, 1);
+  };
+
   const projectLog = () => {
     console.log(projects);
   };
@@ -29,5 +42,5 @@ export const projectController = (() => {
     });
   };
 
-  return {createProject, projectLog, updateProjectDrop};
+  return {createProject, projectLog, updateProject, deleteProject, updateProjectDrop};
 })();
